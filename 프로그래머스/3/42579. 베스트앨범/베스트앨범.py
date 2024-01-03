@@ -17,13 +17,10 @@ def solution(genres, plays):
         total_playing.append((key, playing))
     
     total_playing = sorted(total_playing, key=lambda x : x[1], reverse=True)
-        
-    print(best)
-    print(total_playing)
     
     for genre, _ in total_playing:
         count = 0
-        for idx, play in best[genre]:
+        for idx, _ in best[genre]:
             if count == 2:
                 break
             answer.append(idx)
