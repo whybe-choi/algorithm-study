@@ -1,28 +1,35 @@
 import sys
 sys.setrecursionlimit(100000)
 
-N = int(sys.stdin.readline())
-area = [list(map(int,sys.stdin.readline().split())) for _ in range(N)]  #입력받기
+n = int(sys.stdin.readline())
 
-dx = [-1,1,0,0]
-dy = [0,0,1,-1]
-def dfs(x,y,h):       #범위내 조건을 만족하면 재귀 돌면서 실행
-  for i in range(4):
-    nx = x + dx[i]
-    ny = y + dy[i]
-    if (0<=nx<N) and (0<=ny<N) and (area[nx][ny]>h) and not(visited[nx][ny]):
-      visited[nx][ny] = True
-      dfs(nx,ny,h)
+grid = [list(map(int, sys.stdin.readline().split())) for _ in range(n)]
 
-ans = 1
-for i in range(101):        #높이비교
-  visited = [[False]*N for _ in range(N)]
-  cnt = 0
-  for j in range(N):
-    for k in range(N):
-      if (area[j][k]>i) and not(visited[j][k]):   #비가 온거보다 높고 방문하지 않았으면
-        cnt += 1
-        visited[j][k] = True
-        dfs(j,k,i)
-  ans = max(ans, cnt)
-print(ans)
+def dfs(x, y, k):
+    # 하, 우, 상, 좌
+    dxs, dys = [0, 1, 0, -1], [-1, 0, 1, 0]
+
+    for dx, dy in zip(dxs, dys):
+        new_x, new_y = x + dx, y + dy
+        if (new_x >= 0 and new_x < n) and (new_y >= 0 and new_y < n) and grid[new_x][new_y] > k and not visited[new_x][new_y]:
+            visited[new_x][new_y] = True
+            dfs(new_x, new_y, k)
+
+# k값에 따른 안전 영역의 수
+answer = 0
+
+for k in range(101):
+    # 가능한 k값마다 visited를 초기화해줘야 함.
+    visited = [[False] * n for _ in range(n)]
+    # 안전 영역의 수
+    count = 0
+    for x in range(n):
+        for y in range(n):
+            if grid[x][y] > k and not visited[x][y]:
+                count += 1
+                visited[x][y] = True
+                dfs(x, y, k)
+                
+    answer = max(answer, count)
+
+print(answer)
