@@ -7,7 +7,7 @@ visited = [-1 for _ in range(f)]
 
 queue = deque()
 
-def dfs():
+def bfs():
     while queue: 
         curr_f = queue.popleft()
         for next_f in [curr_f + u, curr_f - d]:
@@ -18,5 +18,5 @@ def dfs():
 queue = deque()
 queue.append(s-1)
 visited[s-1] = 0
-dfs()
+bfs()
 print(visited[g-1] if visited[g-1] != -1 else "use the stairs")
